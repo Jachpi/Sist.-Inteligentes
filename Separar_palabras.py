@@ -3,6 +3,12 @@ import nltk
 from nltk import pos_tag
 from nltk.tokenize import word_tokenize
 
+
+
+'''
+Código generado por IA
+'''
+
 # Ensure required NLTK resources are downloaded
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
