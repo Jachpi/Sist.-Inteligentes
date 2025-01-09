@@ -46,8 +46,8 @@ def create_word_dict(file_path, target_column, output_file):
 
 # Example usage
 if __name__ == "__main__":
-    input_file = "../Sist.-Inteligentes/Dataset/peliculas_procesado.csv"  # Path to the input CSV file
-    target_column = "genre"  # Column to analyze for unique words
-    output_file = "../Sist.-Inteligentes/Dataset/peliculas_genero_separado.json"  # Path to save the updated CSV
+    input_file = "../Dataset/peliculas_procesado.csv"  # Path to the input CSV file
+    target_column = "consensus"  # Column to analyze for unique words
+    output_file = "../Dataset/peliculas_consensus_separado.json"  # Path to save the updated CSV
 
     create_word_dict(input_file, target_column, output_file)

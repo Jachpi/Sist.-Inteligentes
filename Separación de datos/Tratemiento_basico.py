@@ -48,9 +48,9 @@ def clean_columns(file_path, columns_to_clean, output_file):
 
 # Example usage
 if __name__ == "__main__":
-    input_file = "../Sist.-Inteligentes/Dataset/peliculas.csv"  # Path to the input CSV file
+    input_file = "../Dataset/peliculas.csv"  # Path to the input CSV file
     columns_to_clean = ["title", "synopsis","consensus","type","rating","genre","original_language","director","producer",
                         "writer", "release_date_(theaters)", "production_co", "sound_mix", "view_the_collection"]  # List of columns to clean
-    output_file = "../Sist.-Inteligentes/Dataset/peliculas_procesado.csv"  # Path to save the cleaned CSV
+    output_file = "../Dataset/peliculas_procesado.csv"  # Path to save the cleaned CSV
 
     clean_columns(input_file, columns_to_clean, output_file)
