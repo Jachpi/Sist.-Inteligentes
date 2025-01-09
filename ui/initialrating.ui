@@ -43,7 +43,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="imagenLabel">
        <property name="text">
         <string>Imagen</string>
        </property>
@@ -53,7 +53,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label_3">
+      <widget class="QLabel" name="descripcionLabel">
        <property name="text">
         <string>Descripción película</string>
        </property>
@@ -76,7 +76,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBox">
+      <widget class="QComboBox" name="ratingBox">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
