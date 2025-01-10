@@ -1,27 +1,21 @@
 from PyQt5.QtWidgets import QMessageBox
-from view.registrar import RegistrarView
-from models.user import User
+from models.usuario import UsuarioModel
 
 class RegistroController:
     def __init__(self):
-        self.view = RegistrarView()
-        self.view.registrar_button.clicked.connect(self.registrar_usuario)
+        self.modelo_usuario = UsuarioModel()
 
-    def show(self):
-        self.view.show()
+    def registrar_usuario(self, nombre, correo, contrasena, parent=None):
+        """Valida e inserta un usuario en la base de datos."""
+        if not nombre or not correo or not contrasena:
+            QMessageBox.warning(parent, "Error", "Todos los campos son obligatorios.")
+            return False
 
-    def registrar_usuario(self):
-        usuario = self.view.usuario_input.text()
-        contraseña = self.view.pass_input.text()
+        exito = self.modelo_usuario.insertar_usuario(nombre, correo, contrasena)
 
-        if not usuario or not contraseña:
-            QMessageBox.warning(self.view, "Error", "Todos los campos son obligatorios.")
-            return
-
-        if User.usuario_existente(usuario):
-            QMessageBox.warning(self.view, "Error", "El usuario ya existe.")
-            return
-
-        User.registrar_usuario(usuario, contraseña)
-        QMessageBox.information(self.view, "Éxito", f"Usuario '{usuario}' registrado correctamente.")
-        self.view.close()
+        if exito:
+            QMessageBox.information(parent, "Registro Exitoso", f"Usuario '{nombre}' registrado correctamente.")
+            return True
+        else:
+            QMessageBox.warning(parent, "Error", "El correo electrónico ya está registrado.")
+            return False

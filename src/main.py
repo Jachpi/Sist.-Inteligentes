@@ -1,11 +1,11 @@
 from PyQt5.QtWidgets import QApplication, QDialog, QMessageBox
-from view.login import Ui_Dialog
+from view.login import LoginDialog
 from view.registrar import RegistrarDialog  # Importar la ventana de registro
 import sys
 import platform
 import os
 
-class LoginDialog(QDialog, Ui_Dialog):
+class LoginDialog(QDialog, LoginDialog):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -24,8 +24,9 @@ class LoginDialog(QDialog, Ui_Dialog):
             QMessageBox.warning(self, "Error", "Usuario o contraseña incorrectos")
 
     def abrir_ventana_registro(self):
-        self.ventana_registro = RegistrarDialog()
-        self.ventana_registro.exec_()  # Mostrar la ventana de registro como diálogo modal
+            self.ventana_registro = RegistrarDialog()
+            self.ventana_registro.exec_()
+
 
 if __name__ == "__main__":
     if platform.system() == "Linux":
