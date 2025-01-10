@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtWidgets
 from models.session import Sesion
+from view.listado_peliculas import ListadoDialog
 
 class MenuDialog(QtWidgets.QDialog):
     def __init__(self):
@@ -7,6 +8,9 @@ class MenuDialog(QtWidgets.QDialog):
         self.sesion_actual = Sesion()  # Obtener la sesión actual
         self.setupUi()
         self.actualizar_mensaje_bienvenida()  # Actualizar el mensaje
+        self.listadoButton.clicked.connect(self.listado_peliculas)
+        self.logoutButton.clicked.connect(self.cerrar_sesion)
+        
 
     def setupUi(self):
         self.setObjectName("Menu")
@@ -68,6 +72,17 @@ class MenuDialog(QtWidgets.QDialog):
             self.welcomeLabel.setText(f"# Bienvenido, {self.sesion_actual.nombre}")
         else:
             self.welcomeLabel.setText("# Bienvenido, Usuario")
+            
+    def cerrar_sesion(self):
+        """Cierra la sesión actual y cierra la ventana."""
+        self.sesion_actual.cerrar_sesion()
+        self.close()
+            
+    def listado_peliculas(self):
+        """Abre la ventana de listado de películas."""
+        self.listado = ListadoDialog()
+        self.listado.exec_()
+
 
 if __name__ == "__main__":
     import sys

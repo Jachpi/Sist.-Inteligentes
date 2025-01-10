@@ -103,8 +103,7 @@ cython_debug/
 # VSCode settings
 .vscode/
 
-# Qt Designer UI files
-*.ui
+
 
 # SQLite database
 *.db
