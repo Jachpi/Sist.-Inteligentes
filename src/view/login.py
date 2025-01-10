@@ -72,6 +72,7 @@ class LoginDialog(QtWidgets.QDialog):
     def abrir_ventana_registro(self):
         self.ventana_registro = RegistrarDialog()
         self.ventana_registro.exec_()
+    
 
 if __name__ == "__main__":
     import sys
