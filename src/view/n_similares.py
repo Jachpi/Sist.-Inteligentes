@@ -65,7 +65,7 @@ class SimilaresDialog(QtWidgets.QDialog):
         self.mainLayout.addWidget(self.volverBtn)
 
     def cargar_datos_similares(self):
-        """Carga los datos de la película seleccionada y sus similares."""
+        """Carga los datos de la pelicula seleccionada y sus similares."""
         pelicula = self.controlador_pelicula.obtener_info_pelicula(self.id_pelicula)
         similares = self.controlador_pelicula.obtener_similares(self.id_pelicula)
 
@@ -89,7 +89,7 @@ class SimilaresDialog(QtWidgets.QDialog):
             self.listaSimilares.addItem(item)
 
     def abrir_pelicula_similar(self, item):
-        """Cierra la ventana actual y abre la información de la película seleccionada."""
+        """Cierra la ventana actual y abre la info de la pelicula seleccionada."""
         id_pelicula_similar = item.data(QtCore.Qt.UserRole)
         self.close()  # Cierra la ventana actual
         nueva_ventana = SimilaresDialog(id_pelicula_similar)
