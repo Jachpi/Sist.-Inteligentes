@@ -52,7 +52,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="recomendacionesButton">
        <property name="text">
         <string>Recomendaciones basadas en mis gustos</string>
        </property>
@@ -66,7 +66,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="logoutButton">
        <property name="text">
         <string>Cerrar Sesión</string>
        </property>

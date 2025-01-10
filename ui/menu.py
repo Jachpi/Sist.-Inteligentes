@@ -27,15 +27,15 @@ class Ui_Dialog(object):
         self.verticalLayout.addWidget(self.welcomeLabel)
         spacerItem = QtWidgets.QSpacerItem(10, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Maximum)
         self.verticalLayout.addItem(spacerItem)
-        self.pushButton = QtWidgets.QPushButton(Dialog)
-        self.pushButton.setObjectName("pushButton")
-        self.verticalLayout.addWidget(self.pushButton)
+        self.recomendacionesButton = QtWidgets.QPushButton(Dialog)
+        self.recomendacionesButton.setObjectName("recomendacionesButton")
+        self.verticalLayout.addWidget(self.recomendacionesButton)
         self.listadoButton = QtWidgets.QPushButton(Dialog)
         self.listadoButton.setObjectName("listadoButton")
         self.verticalLayout.addWidget(self.listadoButton)
-        self.pushButton_3 = QtWidgets.QPushButton(Dialog)
-        self.pushButton_3.setObjectName("pushButton_3")
-        self.verticalLayout.addWidget(self.pushButton_3)
+        self.logoutButton = QtWidgets.QPushButton(Dialog)
+        self.logoutButton.setObjectName("logoutButton")
+        self.verticalLayout.addWidget(self.logoutButton)
         self.verticalLayout_2.addLayout(self.verticalLayout)
 
         self.retranslateUi(Dialog)
@@ -45,9 +45,9 @@ class Ui_Dialog(object):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Menú principal"))
         self.welcomeLabel.setText(_translate("Dialog", "# Bienvenido, Usuario"))
-        self.pushButton.setText(_translate("Dialog", "Recomendaciones basadas en mis gustos"))
+        self.recomendacionesButton.setText(_translate("Dialog", "Recomendaciones basadas en mis gustos"))
         self.listadoButton.setText(_translate("Dialog", "Listado Películas"))
-        self.pushButton_3.setText(_translate("Dialog", "Cerrar Sesión"))
+        self.logoutButton.setText(_translate("Dialog", "Cerrar Sesión"))
 
 
 if __name__ == "__main__":
