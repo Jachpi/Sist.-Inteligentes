@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QApplication, QDialog, QMessageBox
 from view.login import Ui_Dialog
 from view.registrar import RegistrarDialog  # Importar la ventana de registro
 import sys
+import platform
 import os
 
 class LoginDialog(QDialog, Ui_Dialog):
@@ -27,7 +28,12 @@ class LoginDialog(QDialog, Ui_Dialog):
         self.ventana_registro.exec_()  # Mostrar la ventana de registro como diálogo modal
 
 if __name__ == "__main__":
-    os.environ["QT_QPA_PLATFORM"] = "windows"  # Solución al error de Wayland (si aplica)
+    if platform.system() == "Linux":
+        os.environ["QT_QPA_PLATFORM"] = "xcb"
+    elif platform.system() == "Windows":
+        os.environ["QT_QPA_PLATFORM"] = "windows"
+    elif platform.system() == "Darwin":
+        os.environ["QT_QPA_PLATFORM"] = "cocoa"
 
     app = QApplication(sys.argv)
     ventana = LoginDialog()
