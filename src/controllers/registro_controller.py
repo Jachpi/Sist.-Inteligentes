@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QMessageBox
-from views.registrar import RegistrarView
+from view.registrar import RegistrarView
 from models.user import User
 
 class RegistroController:
