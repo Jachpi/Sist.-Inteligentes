@@ -4,11 +4,9 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import string
 
-
 '''
 Código generado por IA
 '''
-
 
 # Ensure you have downloaded the NLTK stopwords and wordnet packages
 nltk.download('stopwords')
@@ -30,7 +28,7 @@ def clean_text(text):
     filtered_words = [lemmatizer.lemmatize(word.lower()) for word in words if word.lower() not in stop_words]
     return ' '.join(filtered_words)
 
-# Function to clean specified columns in a DataFrame
+# Function to clean specified columns in a DataFrame and remove duplicates based on 'synopsis'
 def clean_columns(file_path, columns_to_clean, output_file):
     # Read the CSV file into a DataFrame
     df = pd.read_csv(file_path)
@@ -41,6 +39,13 @@ def clean_columns(file_path, columns_to_clean, output_file):
             df[column] = df[column].apply(clean_text)
         else:
             print(f"Warning: Column '{column}' not found in the CSV file.")
+
+    # Remove duplicates based on the 'synopsis' column
+    if 'synopsis' in df.columns:
+        df = df.drop_duplicates(subset='synopsis')
+        print("Duplicates based on 'synopsis' have been removed.")
+    else:
+        print("Warning: Column 'synopsis' not found in the CSV file for duplicate removal.")
 
     # Save the cleaned DataFrame to a new CSV file
     df.to_csv(output_file, index=False)
