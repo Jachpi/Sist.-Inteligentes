@@ -4,7 +4,7 @@ tf = {}
 idf = {}
 
 with open(
-        'C:\\Users\JAVI\PycharmProjects\Sistemas-Int\Sist.-Inteligentes\Dataset\peliculas_consensus_separado.json') as f:
+        '/Sist.-Inteligentes/src/controllers/Dataset/peliculas_consensus_separado.json') as f:
     json_data = json.load(f)
     for key, item in json_data.items():
         aux_bag = {}
@@ -26,5 +26,5 @@ with open(
             aux_bag[word] = word_value/idf.get(word)
         tf_idf[key] = aux_bag
 
-    with open('C:\\Users\JAVI\PycharmProjects\Sistemas-Int\Sist.-Inteligentes\Dataset\TF-IDF.json', 'w') as fw:
+    with open('/Sist.-Inteligentes/src/controllers/TF-IDF.json', 'w') as fw:
         json.dump(tf_idf, fw)

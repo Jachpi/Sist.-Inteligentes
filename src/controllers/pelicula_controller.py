@@ -24,7 +24,7 @@ class PeliculaController:
     def obtener_similares(self, id_pelicula):
         """Obtiene películas similares."""
         with open(
-                '../../Dataset/TF-IDF.json') as tf_idf:
+                'Dataset/TF-IDF.json') as tf_idf:
             vectors = json.load(tf_idf)
             similarities = []
             for id, other_film_vector in vectors.items():
@@ -62,7 +62,6 @@ class PeliculaController:
                     similarities.append((id, sim))
 
             similarities.sort(reverse=True, key=lambda cos_sim: cos_sim[1])
-
             most_simmilars = []
             for i in range(0, 10):
                 most_simmilars.append(similarities[i][0])

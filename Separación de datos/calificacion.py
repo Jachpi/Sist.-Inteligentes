@@ -17,7 +17,7 @@ import csv
 if platform.system() == "Darwin":
     csv_path = os.path.join(os.path.expanduser("~"), "Downloads", "peliculas.csv")
 else:
-    csv_path = "../Dataset/peliculas.csv"
+    csv_path = "../src/Dataset/peliculas.csv"
 
 # Confirmar la ruta para depuración
 print(f"Ruta del archivo: {csv_path}")
