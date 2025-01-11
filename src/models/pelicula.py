@@ -15,6 +15,13 @@ class PeliculaModel:
             cursor.execute("SELECT * FROM peliculas")
             return cursor.fetchall()
 
+    def mostrar_peliculas_procesadas(self):
+        """Obtiene todas las películas de la base de datos."""
+        with self.conectar() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM peliculas_procesado")
+            return cursor.fetchall()
+
     def obtener_pelicula_por_id(self, id_pelicula):
         """Obtiene los datos de una película específica por su ID."""
         with self.conectar() as conn:
@@ -32,7 +39,7 @@ class PeliculaModel:
             cursor.execute("""
                 SELECT * FROM peliculas
                 WHERE id != ?
-                ORDER BY RANDOM()
-                LIMIT 5
+                ORDER BY people_score
+                LIMIT 10
             """, (id_pelicula,))
             return cursor.fetchall()
