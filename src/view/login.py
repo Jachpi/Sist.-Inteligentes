@@ -1,5 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMessageBox
 from controllers.login_controller import LoginController
+from view.initialrating import Ui_Dialog
 from view.registrar import RegistrarDialog
 
 class LoginDialog(QtWidgets.QDialog):
@@ -67,12 +69,41 @@ class LoginDialog(QtWidgets.QDialog):
     def verificar_credenciales(self):
         correo = self.userInput.text()
         contrasena = self.passInput.text()
-        self.controlador_login.verificar_credenciales(correo, contrasena, self)
+        
+        # Verificamos las credenciales
+        usuario_id = self.controlador_login.verificar_credenciales(correo, contrasena, self)
+        
+        if usuario_id:
+            # Verificamos si tiene menos de 10 valoraciones
+            if self.controlador_login.verificar_valoraciones_usuario(usuario_id) < 10:
+                self.abrir_ventana_valoracion_inicial(usuario_id)
+            else:
+                QMessageBox.information(self, "Bienvenido", "Inicio de sesión exitoso")
+                self.accept()
+        else:
+            QMessageBox.warning(self, "Error", "Usuario o contraseña incorrectos.")
+
 
     def abrir_ventana_registro(self):
         self.ventana_registro = RegistrarDialog()
         self.ventana_registro.exec_()
-    
+        
+    def recomendar_pelicula(self):
+        """Abre la ventana de initialrating.py para calificar una película aleatoria si el usuario tiene menos de 10 valoraciones."""
+        usuario_id = 1  # Debes obtener el ID del usuario actual (esto puede venir del login)
+        if self.controlador_pelicula.verificar_valoraciones_usuario(usuario_id) < 10:
+            self.ventana_rating = Ui_Dialog(usuario_id)
+            self.ventana_rating.exec_()
+            
+    def abrir_ventana_valoracion_inicial(self, usuario_id):
+        """Abre la ventana de valoración inicial si el usuario tiene menos de 10 valoraciones."""
+        self.ventana_valoracion = QtWidgets.QDialog(self)  # <-- Referencia al padre
+        self.ui_valoracion = Ui_Dialog(usuario_id)
+        self.ui_valoracion.setupUi(self.ventana_valoracion)
+        self.ui_valoracion.mostrar_pelicula()
+        self.ventana_valoracion.exec_()  # Mantener la ventana activa
+
+
 
 if __name__ == "__main__":
     import sys

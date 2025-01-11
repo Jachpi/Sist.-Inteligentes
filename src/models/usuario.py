@@ -9,7 +9,13 @@ class UsuarioModel:
         """Establece conexión con la base de datos."""
         return sqlite3.connect(self.db_path)
 
-
+    def contar_valoraciones_usuario(self, id_usuario):
+        """Cuenta cuántas valoraciones tiene un usuario."""
+        with self.conectar() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT COUNT(*) FROM valoraciones WHERE id_usuario = ?", (id_usuario,))
+            return cursor.fetchone()[0]
+    
     def insertar_usuario(self, nombre, correo, contrasena):
         """Inserta un nuevo usuario en la base de datos."""
         contrasena_hash = self.encriptar_contrasena(contrasena)

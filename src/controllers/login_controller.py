@@ -32,6 +32,10 @@ class LoginController:
         self.menu = MenuDialog()
         self.menu.show()
         ventana_login.close()
+        
+    def verificar_valoraciones_usuario(self, id_usuario):
+        """Verifica cuántas valoraciones tiene un usuario."""
+        return self.modelo_usuario.contar_valoraciones_usuario(id_usuario)
 
 
 
