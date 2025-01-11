@@ -4,7 +4,7 @@ tf = {}
 idf = {}
 
 with open(
-        'C:\\Users\JAVI\PycharmProjects\Sistemas-Int\Sist.-Inteligentes\Dataset\peliculas_synopsis_separado.json') as f:
+        'C:\\Users\JAVI\PycharmProjects\Sistemas-Int\Sist.-Inteligentes\Dataset\peliculas_consensus_separado.json') as f:
     json_data = json.load(f)
     for key, item in json_data.items():
         aux_bag = {}

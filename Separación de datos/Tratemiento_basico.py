@@ -33,6 +33,8 @@ def clean_columns(file_path, columns_to_clean, output_file):
     # Read the CSV file into a DataFrame
     df = pd.read_csv(file_path)
 
+    df.columns = ['id'] + list(df.columns[1:])
+
     # Clean the specified columns
     for column in columns_to_clean:
         if column in df.columns:
