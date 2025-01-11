@@ -24,7 +24,7 @@ class PeliculaController:
     def obtener_similares(self, id_pelicula):
         """Obtiene películas similares."""
         with open(
-                'C:\\Users\JAVI\PycharmProjects\Sistemas-Int\Sist.-Inteligentes\Dataset\TF-IDF.json') as tf_idf:
+                '../../Dataset/TF-IDF.json') as tf_idf:
             vectors = json.load(tf_idf)
             similarities = []
             for id, other_film_vector in vectors.items():
