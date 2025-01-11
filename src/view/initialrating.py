@@ -9,9 +9,12 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from controllers.pelicula_controller import PeliculaController
 
 
 class Ui_Dialog(object):
+    def __init__(self):
+        self.pelicula_controller = PeliculaController()
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(666, 561)
@@ -66,6 +69,19 @@ class Ui_Dialog(object):
         self.ratingBox.setItemText(2, _translate("Dialog", "3 Estrellas"))
         self.ratingBox.setItemText(3, _translate("Dialog", "4 Estrellas"))
         self.ratingBox.setItemText(4, _translate("Dialog", "5 Estrellas"))
+
+   
+    def mostrar_pelicula(self):
+        """Muestra la película aleatoria en la interfaz."""
+        if self.pelicula:
+            self.descripcionLabel.setText(self.pelicula[3]) 
+            self.imagenLabel.setPixmap(QtGui.QPixmap(self.pelicula[5]))  
+
+    def calificar_pelicula(self):
+        """Guarda la valoración de la película."""
+        valoracion = self.ratingBox.currentIndex() + 1  # Obtenemos el valor de la valoración (1 a 5)
+        self.controlador_pelicula.guardar_valoracion(self.id_usuario, self.pelicula[0], valoracion)  # Guardar valoración
+        self.close()
 
 
 if __name__ == "__main__":

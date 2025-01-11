@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from controllers.login_controller import LoginController
+from ui.initialrating import Ui_Dialog
 from view.registrar import RegistrarDialog
 
 class LoginDialog(QtWidgets.QDialog):
@@ -72,7 +73,18 @@ class LoginDialog(QtWidgets.QDialog):
     def abrir_ventana_registro(self):
         self.ventana_registro = RegistrarDialog()
         self.ventana_registro.exec_()
-    
+        
+    def recomendar_pelicula(self):
+        """Abre la ventana de initialrating.py para calificar una película aleatoria si el usuario tiene menos de 10 valoraciones."""
+        usuario_id = 1  # Debes obtener el ID del usuario actual (esto puede venir del login)
+        if self.controlador_pelicula.verificar_valoraciones_usuario(usuario_id) < 10:
+            self.ventana_rating = Ui_Dialog(usuario_id)
+            self.ventana_rating.exec_()
+
+    def abrir_ventana_recomendacion(self):
+        """Abre la ventana de initialrating.py con una película aleatoria."""
+        self.ventana_rating = Ui_Dialog(self.usuario_id)
+        self.ventana_rating.exec_()
 
 if __name__ == "__main__":
     import sys
