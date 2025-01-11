@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest
 from controllers.pelicula_controller import PeliculaController
+import requests
 
 class SimilaresDialog(QtWidgets.QDialog):
     def __init__(self, id_pelicula, parent=None):
@@ -96,11 +97,18 @@ class SimilaresDialog(QtWidgets.QDialog):
         nueva_ventana.exec_()
 
     def cargar_imagen(self, url):
-        """Carga la imagen desde una URL en el QLabel."""
-        manager = QNetworkAccessManager(self)
-        request = QNetworkRequest(QtCore.QUrl(url))
-        manager.finished.connect(self.mostrar_imagen)
-        manager.get(request)
+        """Carga la imagen desde una URL en el QLabel usando requests."""
+        try:
+            response = requests.get(url, timeout=5)
+            if response.status_code == 200:
+                imagen = QtGui.QImage()
+                imagen.loadFromData(response.content)
+                pixmap = QtGui.QPixmap.fromImage(imagen)
+                self.imagenLabel.setPixmap(pixmap.scaled(300, 400, QtCore.Qt.KeepAspectRatio))
+            else:
+                self.imagenLabel.setText("Error al descargar la imagen")
+        except Exception as e:
+            self.imagenLabel.setText(f"Error: {str(e)}")
 
     def mostrar_imagen(self, reply):
         """Muestra la imagen descargada en el QLabel."""

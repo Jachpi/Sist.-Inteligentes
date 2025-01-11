@@ -13,8 +13,12 @@ class UsuarioModel:
         """Cuenta cuántas valoraciones tiene un usuario."""
         with self.conectar() as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT COUNT(*) FROM valoraciones WHERE id_usuario = ?", (id_usuario,))
-            return cursor.fetchone()[0]
+            cursor.execute("SELECT COUNT(*) FROM valoraciones WHERE id_usuario = ?", (str(id_usuario),))
+            resultado = cursor.fetchone()
+            if resultado:
+                return resultado[0]
+            return 0
+
     
     def insertar_usuario(self, nombre, correo, contrasena):
         """Inserta un nuevo usuario en la base de datos."""

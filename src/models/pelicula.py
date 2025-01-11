@@ -14,7 +14,7 @@ class PeliculaModel:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM peliculas")
             return cursor.fetchall()
-
+        
     def mostrar_peliculas_procesadas(self):
         """Obtiene todas las películas de la base de datos."""
         with self.conectar() as conn:
