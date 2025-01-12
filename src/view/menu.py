@@ -83,7 +83,7 @@ class MenuDialog(QtWidgets.QDialog):
             
     def listado_peliculas(self):
         """Abre la ventana de listado de películas."""
-        self.listado = ListadoDialog()
+        self.listado = ListadoDialog(self.id_usuario)
         self.listado.exec_()
 
     def recomendar_peliculas(self):

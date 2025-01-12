@@ -69,7 +69,40 @@ class PeliculaModel:
         except Exception as e:
             print(f"[ERROR] Error inesperado al guardar la valoración: {e}")
 
+    def obtener_valoracion(self, id_usuario, id_pelicula):
+        """Consulta si existe una valoración previa."""
+        with self.conectar() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT valoracion FROM valoraciones
+                WHERE id_usuario = ? AND id_pelicula = ?
+            """, (id_usuario, id_pelicula))
+            resultado = cursor.fetchone()
+            return resultado[0] if resultado else None
+
+    def actualizar_valoracion(self, id_usuario, id_pelicula, nueva_valoracion):
+        """Actualiza la valoración existente."""
+        with self.conectar() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                UPDATE valoraciones
+                SET valoracion = ?
+                WHERE id_usuario = ? AND id_pelicula = ?
+            """, (nueva_valoracion, id_usuario, id_pelicula))
+            conn.commit()
             
+            
+    def obtener_valoracion(self, id_usuario, id_pelicula):
+        """Obtiene la valoración existente de un usuario para una película."""
+        with self.conectar() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT valoracion FROM valoraciones
+                WHERE id_usuario = ? AND id_pelicula = ?
+            """, (id_usuario, id_pelicula))
+            resultado = cursor.fetchone()
+            return resultado[0] if resultado else None
+
     def contar_valoraciones_usuario(self, id_usuario):
         """Cuenta cuántas valoraciones tiene un usuario."""
         with self.conectar() as conn:

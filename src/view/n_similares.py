@@ -5,8 +5,9 @@ from controllers.pelicula_controller import PeliculaController
 import requests
 
 class SimilaresDialog(QtWidgets.QDialog):
-    def __init__(self, id_pelicula, parent=None):
+    def __init__(self, id_pelicula, id_usuario, parent=None):
         super().__init__(parent)
+        self.id_usuario = id_usuario
         self.id_pelicula = id_pelicula
         self.controlador_pelicula = PeliculaController()
         self.setupUi()
@@ -47,6 +48,12 @@ class SimilaresDialog(QtWidgets.QDialog):
 
         self.infoLayout.addLayout(self.detalleLayout)
         self.mainLayout.addLayout(self.infoLayout)
+        
+        # --- Mostrar valoración actual ---
+        self.valoracionLabel = QtWidgets.QLabel(self)
+        self.valoracionLabel.setStyleSheet("font-size: 14px; color: blue;")
+        self.valoracionLabel.setAlignment(QtCore.Qt.AlignLeft)
+        self.detalleLayout.addWidget(self.valoracionLabel)
 
         # --- Parte Inferior: Lista de Películas Similares ---
         self.labelSimilares = QtWidgets.QLabel("Películas Similares")
@@ -58,7 +65,14 @@ class SimilaresDialog(QtWidgets.QDialog):
         self.listaSimilares = QtWidgets.QListWidget(self)
         self.listaSimilares.itemClicked.connect(self.abrir_pelicula_similar)
         self.mainLayout.addWidget(self.listaSimilares)
+        
+        # Botón para valorar la película
+        self.valorarBtn = QtWidgets.QPushButton(self)
+        self.valorarBtn.setText("Valorar esta película")
+        self.valorarBtn.clicked.connect(self.valorar_pelicula)
+        self.mainLayout.addWidget(self.valorarBtn)
 
+        
         # Botón Volver
         self.volverBtn = QtWidgets.QPushButton(self)
         self.volverBtn.setText("Volver")
@@ -81,7 +95,14 @@ class SimilaresDialog(QtWidgets.QDialog):
 
             # Cargar imagen desde URL
             self.cargar_imagen(imagen_url)
-
+            
+            # --- Obtener y mostrar la valoración actual del usuario ---
+            valoracion = self.controlador_pelicula.obtener_valoracion(self.id_usuario, self.id_pelicula)
+            if valoracion:
+                self.valoracionLabel.setText(f"Tu valoración: {valoracion} estrellas ⭐")
+            else:
+                self.valoracionLabel.setText("Aún no has valorado esta película.")
+            
         # Llenar la lista con películas similares
         self.listaSimilares.clear()
         for similar in similares:
@@ -93,8 +114,40 @@ class SimilaresDialog(QtWidgets.QDialog):
         """Cierra la ventana actual y abre la info de la pelicula seleccionada."""
         id_pelicula_similar = item.data(QtCore.Qt.UserRole)
         self.close()  # Cierra la ventana actual
-        nueva_ventana = SimilaresDialog(id_pelicula_similar)
+        nueva_ventana = SimilaresDialog(id_pelicula_similar, self.id_usuario)
         nueva_ventana.exec_()
+        
+    def valorar_pelicula(self):
+        """Permite al usuario valorar o actualizar la valoración de la película actual."""
+        # Verificar si ya existe una valoración
+        valoracion_existente = self.controlador_pelicula.obtener_valoracion(self.id_usuario, self.id_pelicula)
+
+        if valoracion_existente:
+            mensaje = f"Ya valoraste esta película con {valoracion_existente} estrellas. ¿Deseas actualizarla?"
+        else:
+            mensaje = "¿Qué nota le das a esta película? (1-5):"
+
+        # Cuadro de diálogo para seleccionar la valoración
+        valor, ok = QtWidgets.QInputDialog.getInt(
+            self, "Valorar Película", mensaje,
+            min=1, max=5
+        )
+
+        if ok:
+            # Si ya existe, actualizar; si no, insertar
+            if valoracion_existente:
+                self.controlador_pelicula.actualizar_valoracion(self.id_usuario, self.id_pelicula, valor)
+                QtWidgets.QMessageBox.information(self, "Valoración Actualizada", "¡Tu valoración ha sido actualizada!")
+            else:
+                self.controlador_pelicula.guardar_valoracion(self.id_usuario, self.id_pelicula, valor)
+                QtWidgets.QMessageBox.information(self, "Valoración Guardada", "¡Gracias por valorar esta película!")
+
+            
+            
+    def guardar_valoracion(self, id_usuario, id_pelicula, valoracion):
+        """Guarda la valoración de la película en la base de datos."""
+        self.modelo_pelicula.guardar_valoracion(id_usuario, id_pelicula, valoracion)
+
 
     def cargar_imagen(self, url):
         """Carga la imagen desde una URL en el QLabel usando requests."""

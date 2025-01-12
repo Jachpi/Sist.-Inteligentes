@@ -86,10 +86,24 @@ class PeliculaController:
     def verificar_valoraciones_usuario(self, id_usuario):
         """Verifica si el usuario tiene menos de 10 valoraciones."""
         return self.modelo_pelicula.contar_valoraciones_usuario(id_usuario)
+    
+    
+    def obtener_valoracion(self, id_usuario, id_pelicula):
+        """Obtiene la valoración existente de un usuario para una película."""
+        return self.modelo_pelicula.obtener_valoracion(id_usuario, id_pelicula)
+
 
     def obtener_pelicula_aleatoria(self):
         """Obtiene una película aleatoria."""
         return self.modelo_pelicula.obtener_pelicula_aleatoria()
+    
+    def obtener_valoracion(self, id_usuario, id_pelicula):
+        """Obtiene la valoración existente de un usuario para una película."""
+        return self.modelo_pelicula.obtener_valoracion(id_usuario, id_pelicula)
+    
+    def actualizar_valoracion(self, id_usuario, id_pelicula, nueva_valoracion):
+        """Actualiza la valoración existente de un usuario para una película."""
+        return self.modelo_pelicula.actualizar_valoracion(id_usuario, id_pelicula, nueva_valoracion)
 
     def guardar_valoracion(self, id_usuario, id_pelicula, valoracion):
         """Guarda la valoración de una película."""

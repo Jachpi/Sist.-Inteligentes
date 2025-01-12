@@ -3,8 +3,9 @@ from controllers.menu_controller import MenuController
 from view.n_similares import SimilaresDialog
 
 class ListadoDialog(QtWidgets.QDialog):
-    def __init__(self):
+    def __init__(self, id_usuario):
         super().__init__()
+        self.id_usuario = id_usuario
         self.controlador_menu = MenuController()
         self.setupUi()
         self.cargar_peliculas()
@@ -56,5 +57,5 @@ class ListadoDialog(QtWidgets.QDialog):
     def mostrar_similares(self, index):
         """Abre el diálogo de películas similares al hacer doble clic."""
         id_pelicula = self.modelo.itemFromIndex(index).data()
-        self.similares_dialog = SimilaresDialog(id_pelicula)
+        self.similares_dialog = SimilaresDialog(id_pelicula, self.id_usuario)
         self.similares_dialog.exec_()
