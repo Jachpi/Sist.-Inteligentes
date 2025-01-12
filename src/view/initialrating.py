@@ -127,7 +127,7 @@ class Ui_Dialog(object):
     def abrir_menu(self):
         """Abre el menú principal una vez completadas las valoraciones."""
         self.menu_dialog = QtWidgets.QDialog()
-        self.menu_ui = MenuDialog()
+        self.menu_ui = MenuDialog(self.id_usuario)
         self.menu_ui.setupUi(self.menu_dialog)
         self.menu_dialog.exec_()
         if self.dialog:

@@ -1,15 +1,19 @@
 from PyQt5 import QtCore, QtWidgets
 from models.session import Sesion
 from view.listado_peliculas import ListadoDialog
+from view.n_recomendaciones import Ui_Dialog
 
 class MenuDialog(QtWidgets.QDialog):
-    def __init__(self):
+    def __init__(self, id_usuario):
         super().__init__()
         self.sesion_actual = Sesion()  # Obtener la sesión actual
+        self.id_usuario = id_usuario
         self.setupUi()
         self.actualizar_mensaje_bienvenida()  # Actualizar el mensaje
+        self.recomendacionesButton.clicked.connect(self.recomendar_peliculas)
         self.listadoButton.clicked.connect(self.listado_peliculas)
         self.logoutButton.clicked.connect(self.cerrar_sesion)
+        print(self.id_usuario)
         
 
     def setupUi(self):
@@ -82,6 +86,10 @@ class MenuDialog(QtWidgets.QDialog):
         """Abre la ventana de listado de películas."""
         self.listado = ListadoDialog()
         self.listado.exec_()
+
+    def recomendar_peliculas(self):
+        self.recomendador_menu = Ui_Dialog(self.id_usuario)
+        self.recomendador_menu.exec_()
 
 
 if __name__ == "__main__":

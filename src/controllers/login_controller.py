@@ -22,14 +22,14 @@ class LoginController:
 
             # Cerrar login y abrir menú
             QMessageBox.information(ventana_login, "Acceso permitido", f"¡Bienvenido {usuario[1]}!")
-            self.abrir_menu(ventana_login)
+            self.abrir_menu(ventana_login, usuario[0])
             return True
         else:
             QMessageBox.warning(ventana_login, "Error", "Usuario o contraseña incorrectos.")
             return False
 
-    def abrir_menu(self, ventana_login):
-        self.menu = MenuDialog()
+    def abrir_menu(self, ventana_login, id_usuario):
+        self.menu = MenuDialog(id_usuario)
         self.menu.show()
         ventana_login.close()
         
