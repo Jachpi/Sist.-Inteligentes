@@ -95,8 +95,6 @@ class PeliculaController:
                 elif valoracion[3] == 3:
                     chosen_word = random.choice(list(simmilar_film_dict.keys()))
                     user_bag[chosen_word] = True
-            print(user_bag)
-            print(black_list)
             # Cálculo del Sorcen_Dice
             simmilar_films = []
             for key, film_dict in vectors.items():
