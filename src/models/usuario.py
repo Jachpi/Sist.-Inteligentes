@@ -9,15 +9,27 @@ class UsuarioModel:
         """Establece conexión con la base de datos."""
         return sqlite3.connect(self.db_path)
 
+    def obtener_usuario(self, correo, contrasena):
+        """Busca el usuario por correo y contraseña encriptada."""
+        contrasena_hash = hashlib.sha256(contrasena.encode()).hexdigest()
+        with self.conectar() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT id_usuario FROM usuario 
+                WHERE correo_electronico = ? AND contrasena = ?
+            """, (correo, contrasena_hash))
+            return cursor.fetchone()
+
     def contar_valoraciones_usuario(self, id_usuario):
         """Cuenta cuántas valoraciones tiene un usuario."""
         with self.conectar() as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT COUNT(*) FROM valoraciones WHERE id_usuario = ?", (str(id_usuario),))
+            cursor.execute("""
+                SELECT COUNT(*) FROM valoraciones 
+                WHERE id_usuario = ?
+            """, (id_usuario,))
             resultado = cursor.fetchone()
-            if resultado:
-                return resultado[0]
-            return 0
+            return resultado[0] if resultado else 0
 
     
     def insertar_usuario(self, nombre, correo, contrasena):

@@ -5,8 +5,11 @@ class PeliculaModel:
         self.db_path = db_path
 
     def conectar(self):
-        """Establece conexión con la base de datos."""
-        return sqlite3.connect(self.db_path)
+        """Establece conexión con la base de datos y habilita claves foráneas."""
+        conn = sqlite3.connect(self.db_path)
+        conn.execute("PRAGMA foreign_keys = ON")  # Activa claves foráneas
+        return conn
+
 
     def mostrar_peliculas(self):
         """Obtiene todas las películas de la base de datos."""
@@ -47,17 +50,26 @@ class PeliculaModel:
         with self.conectar() as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM peliculas ORDER BY RANDOM() LIMIT 1")
-            return cursor.fetchone()
+            resultado = cursor.fetchone()
+            return resultado
+
 
     def guardar_valoracion(self, id_usuario, id_pelicula, valoracion):
-        """Guarda la valoración de un usuariogit  para una película."""
-        with self.conectar() as conn:
-            cursor = conn.cursor()
-            cursor.execute(
-                "INSERT INTO valoraciones (id_usuario, id_pelicula, valoracion) VALUES (?, ?, ?)",
-                (id_usuario, id_pelicula, valoracion),
-            )
-            conn.commit()
+        """Guarda la valoración de un usuario para una película."""
+        try:
+            with self.conectar() as conn:
+                cursor = conn.cursor()
+                cursor.execute("""
+                    INSERT INTO valoraciones (id_usuario, id_pelicula, valoracion)
+                    VALUES (?, ?, ?)
+                """, (id_usuario, id_pelicula, valoracion))
+                conn.commit()
+                print("[DEBUG] Valoración guardada correctamente.")
+        except sqlite3.IntegrityError as e:
+            print(f"[ERROR] Error de integridad al guardar la valoración: {e}")
+        except Exception as e:
+            print(f"[ERROR] Error inesperado al guardar la valoración: {e}")
+
             
     def contar_valoraciones_usuario(self, id_usuario):
         """Cuenta cuántas valoraciones tiene un usuario."""

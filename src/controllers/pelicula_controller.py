@@ -89,4 +89,5 @@ class PeliculaController:
 
     def guardar_valoracion(self, id_usuario, id_pelicula, valoracion):
         """Guarda la valoración de una película."""
+        print(f"[DEBUG] Guardando valoración: Usuario {id_usuario}, Película {id_pelicula}, Valoración {valoracion}")
         self.modelo_pelicula.guardar_valoracion(id_usuario, id_pelicula, valoracion)
