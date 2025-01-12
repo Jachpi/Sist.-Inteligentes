@@ -4,11 +4,7 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import string
 
-'''
-Código generado por IA
-'''
 
-# Ensure you have downloaded the NLTK stopwords and wordnet packages
 nltk.download('stopwords')
 nltk.download('wordnet')
 nltk.download('omw-1.4')
