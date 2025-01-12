@@ -5,23 +5,26 @@ tf = {}
 idf = {}
 
 with open(
-        'peliculas_consensus_separado.json') as f:
+        'C:\\Users\\JAVI\\PycharmProjects\\Sistemas-Int\\Sist.-Inteligentes\\src\Dataset\\peliculas_consensus_separado.json') as f:
     json_data = json.load(f)
     N = len(json_data)
-    print(N)
     for key, item in json_data.items():
         aux_bag = {}
+        already_found_bag = {}
         for word in item:
-            if idf.get(word):
-                idf[word] += 1
-            else:
-                idf[word] = 1
+            if not already_found_bag.get(word):
+                if idf.get(word):
+                    idf[word] += 1
+                else:
+                    idf[word] = 1
+            already_found_bag[word] = True
 
             if aux_bag.get(word):
                 aux_bag[word] += 1
             else:
                 aux_bag[word] = 1
         tf[key] = aux_bag
+
     tf_idf = {}
     for key, item in tf.items():
         aux_bag = {}
