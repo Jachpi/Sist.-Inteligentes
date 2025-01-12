@@ -58,3 +58,13 @@ class PeliculaModel:
                 (id_usuario, id_pelicula, valoracion),
             )
             conn.commit()
+            
+    def contar_valoraciones_usuario(self, id_usuario):
+        """Cuenta cuántas valoraciones tiene un usuario."""
+        with self.conectar() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT COUNT(*) FROM valoraciones WHERE id_usuario = ?", (str(id_usuario),))
+            resultado = cursor.fetchone()
+            if resultado:
+                return resultado[0]
+            return 0

@@ -72,21 +72,12 @@ class PeliculaController:
     #??
     def obtener_pelicula_por_id(self, id_pelicula):
         """Obtiene los datos de una película específica por su ID."""
-        with self.conectar() as conn:
-            cursor = conn.cursor()
-            cursor.execute("""
-                SELECT id, title, year, synopsis, genre, img
-                FROM peliculas WHERE id = ?
-            """, (id_pelicula,))
-            return cursor.fetchone()
+        return self.modelo_pelicula.obtener_pelicula_por_id(id_pelicula)
     
         
     def contar_valoraciones_usuario(self, id_usuario):
         """Cuenta cuántas valoraciones tiene un usuario."""
-        with self.conectar() as conn:
-            cursor = conn.cursor()
-            cursor.execute("SELECT COUNT(*) FROM valoraciones WHERE id_usuario = ?", (id_usuario,))
-            return cursor.fetchone()[0]
+        return self.modelo_pelicula.contar_valoraciones_usuario(id_usuario)
         
     def verificar_valoraciones_usuario(self, id_usuario):
         """Verifica si el usuario tiene menos de 10 valoraciones."""
