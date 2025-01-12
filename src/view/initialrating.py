@@ -7,8 +7,8 @@ class Ui_Dialog(object):
     def __init__(self, id_usuario=None):
         self.id_usuario = id_usuario
         self.pelicula_controller = PeliculaController()
+        self.contador_valoraciones = self.pelicula_controller.contar_valoraciones_usuario(self.id_usuario)
         self.pelicula = None
-        self.contador_valoraciones = 0  # Contador de valoraciones
         self.manager = QtNetwork.QNetworkAccessManager()  # Maneja las descargas de imágenes
 
     def setupUi(self, Dialog):
@@ -68,7 +68,6 @@ class Ui_Dialog(object):
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
-
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Valoración Inicial"))
@@ -88,18 +87,6 @@ class Ui_Dialog(object):
         except Exception as e:
             self.imagenLabel.setText(f"Error: {str(e)}")
 
-
-    def mostrar_imagen(self, reply):
-        """Muestra la imagen descargada en el QLabel."""
-        if reply.error() == QtNetwork.QNetworkReply.NoError:
-            datos = reply.readAll()
-            imagen = QtGui.QImage()
-            imagen.loadFromData(datos)
-            pixmap = QtGui.QPixmap.fromImage(imagen)
-            self.imagenLabel.setPixmap(pixmap.scaled(300, 400, QtCore.Qt.KeepAspectRatio))
-        else:
-            self.imagenLabel.setText("Error al cargar la imagen")
-
     def mostrar_pelicula(self):
         """Muestra una película aleatoria con imagen descargada."""
         self.pelicula = self.pelicula_controller.obtener_pelicula_aleatoria()
@@ -110,7 +97,6 @@ class Ui_Dialog(object):
             self.cargar_imagen(imagen_url)
         else:
             self.descripcionLabel.setText("No se pudo cargar la película.")
-
 
     def calificar_pelicula(self):
         """Guarda la valoración y muestra otra película si no ha valorado 10."""
@@ -123,7 +109,7 @@ class Ui_Dialog(object):
         else:
             QtWidgets.QMessageBox.information(None, "Completado", "¡Has valorado 10 películas!")
             self.abrir_menu()
-                
+
     def abrir_menu(self):
         """Abre el menú principal una vez completadas las valoraciones."""
         self.menu_dialog = QtWidgets.QDialog()
@@ -132,7 +118,6 @@ class Ui_Dialog(object):
         self.menu_dialog.exec_()
         if self.dialog:
             self.dialog.close()
-
 
 if __name__ == "__main__":
     import sys
