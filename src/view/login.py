@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QMessageBox
 from controllers.login_controller import LoginController
 from view.initialrating import Ui_Dialog
 from view.registrar import RegistrarDialog
+from view.menu import MenuDialog 
 
 class LoginDialog(QtWidgets.QDialog):
     def __init__(self):
@@ -69,19 +70,39 @@ class LoginDialog(QtWidgets.QDialog):
     def verificar_credenciales(self):
         correo = self.userInput.text()
         contrasena = self.passInput.text()
-        
-        # Verificamos las credenciales
-        usuario_id = self.controlador_login.verificar_credenciales(correo, contrasena, self)
-        
+
+        usuario_id = self.controlador_login.verificar_credenciales(correo, contrasena)
+
         if usuario_id:
-            # Verificamos si tiene menos de 10 valoraciones
             if self.controlador_login.verificar_valoraciones_usuario(usuario_id) < 10:
                 self.abrir_ventana_valoracion_inicial(usuario_id)
             else:
-                QMessageBox.information(self, "Bienvenido", "Inicio de sesión exitoso")
-                self.accept()
+                self.abrir_menu(usuario_id)
         else:
-            QMessageBox.warning(self, "Error", "Usuario o contraseña incorrectos.")
+            QtWidgets.QMessageBox.warning(self, "Error", "Usuario o contraseña incorrectos.")
+
+    def abrir_ventana_valoracion_inicial(self, usuario_id):
+        print(f"[DEBUG] Abriendo ventana de valoración para usuario ID: {usuario_id}")
+        dialog = QtWidgets.QDialog()
+        self.ventana_valoracion = Ui_Dialog(usuario_id)
+        self.ventana_valoracion.setupUi(dialog)
+        
+        # Asegurarse de que se llama a mostrar_pelicula
+        self.ventana_valoracion.mostrar_pelicula()
+        
+        dialog.exec_()
+        
+    def abrir_menu(self, id_usuario):
+        """Cierra el login y abre el menú principal."""
+        self.close()  # Cerramos la ventana de login
+        
+        self.menu_dialog = MenuDialog(id_usuario)
+        self.menu_dialog.exec_()  # Ahora se abre el menú principal
+
+
+
+
+
 
 
     def abrir_ventana_registro(self):
@@ -95,13 +116,6 @@ class LoginDialog(QtWidgets.QDialog):
             self.ventana_rating = Ui_Dialog(usuario_id)
             self.ventana_rating.exec_()
             
-    def abrir_ventana_valoracion_inicial(self, usuario_id):
-        """Abre la ventana de valoración inicial si el usuario tiene menos de 10 valoraciones."""
-        self.ventana_valoracion = QtWidgets.QDialog(self)  # <-- Referencia al padre
-        self.ui_valoracion = Ui_Dialog(usuario_id)
-        self.ui_valoracion.setupUi(self.ventana_valoracion)
-        self.ui_valoracion.mostrar_pelicula()
-        self.ventana_valoracion.exec_()  # Mantener la ventana activa
 
 
 

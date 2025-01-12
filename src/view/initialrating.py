@@ -4,12 +4,13 @@ import requests
 from view.menu import MenuDialog  # Importar MenuDialog
 
 class Ui_Dialog(object):
-    def __init__(self, id_usuario=None):
-        self.id_usuario = id_usuario
+    def __init__(self, usuario_id=None):
+        self.id_usuario = usuario_id  # Guardar el ID del usuario
         self.pelicula_controller = PeliculaController()
-        self.contador_valoraciones = self.pelicula_controller.contar_valoraciones_usuario(self.id_usuario)
+        self.contador_valoraciones = self.pelicula_controller.modelo_pelicula.contar_valoraciones_usuario(self.id_usuario)
         self.pelicula = None
-        self.manager = QtNetwork.QNetworkAccessManager()  # Maneja las descargas de imágenes
+        self.manager = QtNetwork.QNetworkAccessManager()
+
 
     def setupUi(self, Dialog):
         self.dialog = Dialog  # Guardar referencia
@@ -91,12 +92,14 @@ class Ui_Dialog(object):
         """Muestra una película aleatoria con imagen descargada."""
         self.pelicula = self.pelicula_controller.obtener_pelicula_aleatoria()
         if self.pelicula:
-            self.titleLabel.setText(self.pelicula[1])
+            self.titleLabel.setText(self.pelicula[1])  # Título
             self.descripcionLabel.setText(self.pelicula[3])  # Sinopsis
-            imagen_url = str(self.pelicula[26])  # Convertir explícitamente a str
+
+            imagen_url = str(self.pelicula[-1]).strip()  # URL de la imagen
             self.cargar_imagen(imagen_url)
         else:
             self.descripcionLabel.setText("No se pudo cargar la película.")
+
 
     def calificar_pelicula(self):
         """Guarda la valoración y muestra otra película si no ha valorado 10."""
@@ -112,12 +115,11 @@ class Ui_Dialog(object):
 
     def abrir_menu(self):
         """Abre el menú principal una vez completadas las valoraciones."""
-        self.menu_dialog = QtWidgets.QDialog()
-        self.menu_ui = MenuDialog(self.id_usuario)
-        self.menu_ui.setupUi(self.menu_dialog)
+        self.menu_dialog = MenuDialog(self.id_usuario)  # Pasar el ID del usuario
         self.menu_dialog.exec_()
         if self.dialog:
             self.dialog.close()
+
 
 if __name__ == "__main__":
     import sys

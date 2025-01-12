@@ -9,32 +9,18 @@ class LoginController:
         self.modelo_usuario = UsuarioModel()
         self.sesion = Sesion()
 
-    def verificar_credenciales(self, correo, contrasena, ventana_login):
-        if not correo or not contrasena:
-            QMessageBox.warning(ventana_login, "Error", "Todos los campos son obligatorios.")
-            return False
-
-        usuario = self.modelo_usuario.obtener_usuario_por_correo(correo)
-
-        if usuario and self.modelo_usuario.verificar_usuario(correo, contrasena):
-            # Guardar sesión
-            self.sesion.iniciar_sesion(usuario[0], usuario[1], usuario[2])  # id, nombre, correo
-
-            # Cerrar login y abrir menú
-            QMessageBox.information(ventana_login, "Acceso permitido", f"¡Bienvenido {usuario[1]}!")
-            self.abrir_menu(ventana_login, usuario[0])
-            return True
-        else:
-            QMessageBox.warning(ventana_login, "Error", "Usuario o contraseña incorrectos.")
-            return False
-
     def abrir_menu(self, ventana_login, id_usuario):
         self.menu = MenuDialog(id_usuario)
         self.menu.show()
         ventana_login.close()
         
+    def verificar_credenciales(self, correo, contrasena):
+        """Verifica si el usuario existe y devuelve su ID."""
+        resultado = self.modelo_usuario.obtener_usuario(correo, contrasena)
+        return resultado[0] if resultado else None
+
     def verificar_valoraciones_usuario(self, id_usuario):
-        """Verifica cuántas valoraciones tiene un usuario."""
+        """Verifica cuántas valoraciones ha hecho el usuario."""
         return self.modelo_usuario.contar_valoraciones_usuario(id_usuario)
 
 
