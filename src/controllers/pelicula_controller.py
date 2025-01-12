@@ -10,6 +10,8 @@ class PeliculaController:
         """Obtiene todas las películas."""
         return self.modelo_pelicula.mostrar_peliculas()
 
+    def obtener_peliculas_recomendadas(self, id_usuario):
+        return self.modelo_pelicula.obtener_peliculas_similares(id_usuario)
     def obtener_info_pelicula(self, id_pelicula):
         """Obtiene los datos de la película seleccionada."""
         return self.modelo_pelicula.obtener_pelicula_por_id(id_pelicula)
@@ -69,7 +71,9 @@ class PeliculaController:
             data = self.modelo_pelicula.obtener_peliculas_similares(most_simmilars)
             return data
 
-    #??
+    def obtener_similares_a_usuario(self, id_usuario):
+        pass
+
     def obtener_pelicula_por_id(self, id_pelicula):
         """Obtiene los datos de una película específica por su ID."""
         return self.modelo_pelicula.obtener_pelicula_por_id(id_pelicula)

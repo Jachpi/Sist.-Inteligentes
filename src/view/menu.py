@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtWidgets
 from models.session import Sesion
 from view.listado_peliculas import ListadoDialog
-from view.n_recomendaciones import Ui_Dialog
+from view.n_recomendaciones import Rec_Dialog
 
 class MenuDialog(QtWidgets.QDialog):
     def __init__(self, id_usuario):
@@ -13,7 +13,6 @@ class MenuDialog(QtWidgets.QDialog):
         self.recomendacionesButton.clicked.connect(self.recomendar_peliculas)
         self.listadoButton.clicked.connect(self.listado_peliculas)
         self.logoutButton.clicked.connect(self.cerrar_sesion)
-        print(self.id_usuario)
         
 
     def setupUi(self):
@@ -88,13 +87,13 @@ class MenuDialog(QtWidgets.QDialog):
         self.listado.exec_()
 
     def recomendar_peliculas(self):
-        self.recomendador_menu = Ui_Dialog(self.id_usuario)
+        self.recomendador_menu = Rec_Dialog(self.id_usuario)
         self.recomendador_menu.exec_()
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    menu = MenuDialog()
+    menu = MenuDialog(0)
     menu.show()
     sys.exit(app.exec_())

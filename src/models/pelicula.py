@@ -35,7 +35,6 @@ class PeliculaModel:
     def obtener_peliculas_similares(self, ids_peliculas):
         """
         Simula la búsqueda de películas similares.
-        Por ahora solo devuelve 5 películas distintas a la seleccionada.
         """
         with self.conectar() as conn:
             cursor = conn.cursor()
