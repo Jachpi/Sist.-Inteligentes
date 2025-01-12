@@ -1,3 +1,5 @@
+import random
+
 from models.pelicula import PeliculaModel
 import json
 from scipy.spatial.distance import cosine
@@ -72,7 +74,46 @@ class PeliculaController:
             return data
 
     def obtener_similares_a_usuario(self, id_usuario):
-        pass
+        """Crea un bag of words propio con las valoraciones actuales del usuario"""
+        valoraciones = self.modelo_pelicula.obtener_peliculas_bien_valoradas(id_usuario)
+        with open(
+                'Dataset/TF-IDF.json') as tf_idf:
+            vectors = json.load(tf_idf)
+            user_bag = {}
+            black_list = {}  # Usado para NO recomendar películas ya valoradas
+            for valoracion in valoraciones:  # cada valoración -> (id valoración, id usuario, id pelicula, valoración)
+                simmilar_film_dict = vectors[str(valoracion[2])]
+                black_list[valoracion[2]] = True
+                if valoracion[3] == 5:
+                    chosen_words = random.sample(list(simmilar_film_dict.keys()), 4)
+                    for word in chosen_words:
+                        user_bag[word] = True
+                elif valoracion[3] == 4:
+                    chosen_words = random.sample(list(simmilar_film_dict.keys()),2)
+                    user_bag[chosen_words[0]] = True
+                    user_bag[chosen_words[1]] = True
+                elif valoracion[3] == 3:
+                    chosen_word = random.choice(list(simmilar_film_dict.keys()))
+                    user_bag[chosen_word] = True
+            print(user_bag)
+            print(black_list)
+            # Cálculo del Sorcen_Dice
+            simmilar_films = []
+            for key, film_dict in vectors.items():
+                if not black_list.get(int(key)):
+                    sorcen_value = 2 * len(user_bag.keys() & film_dict.keys()) / (
+                                len(user_bag.keys()) + len(film_dict.keys()))
+                    simmilar_films.append((key,sorcen_value))
+
+            simmilar_films.sort(reverse=True, key=lambda cos_sim: cos_sim[1])
+            most_simmilars = []
+            for i in range(0, 10):
+                most_simmilars.append(simmilar_films[i][0])
+            print("Películas más similares a usuario " + str(id_usuario) + ": " + str(most_simmilars))
+            data = self.modelo_pelicula.obtener_peliculas_similares(most_simmilars)
+            return data
+
+    # 2 * len(usuario_bag.keys() & pelicula_bag.keys())/(len(pelicula_bag.keys())+len(usuario_bag.keys()))
 
     def obtener_pelicula_por_id(self, id_pelicula):
         """Obtiene los datos de una película específica por su ID."""
@@ -96,10 +137,7 @@ class PeliculaController:
     def obtener_pelicula_aleatoria(self):
         """Obtiene una película aleatoria."""
         return self.modelo_pelicula.obtener_pelicula_aleatoria()
-    
-    def obtener_valoracion(self, id_usuario, id_pelicula):
-        """Obtiene la valoración existente de un usuario para una película."""
-        return self.modelo_pelicula.obtener_valoracion(id_usuario, id_pelicula)
+
     
     def actualizar_valoracion(self, id_usuario, id_pelicula, nueva_valoracion):
         """Actualiza la valoración existente de un usuario para una película."""

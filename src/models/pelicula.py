@@ -52,6 +52,12 @@ class PeliculaModel:
             resultado = cursor.fetchone()
             return resultado
 
+    def obtener_peliculas_bien_valoradas(self, id_usuario):
+        with self.conectar() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM valoraciones WHERE id_usuario = ? AND valoracion > 2"
+                           " ORDER BY id_valoracion LIMIT 30", (id_usuario,))
+            return cursor.fetchall()
 
     def guardar_valoracion(self, id_usuario, id_pelicula, valoracion):
         """Guarda la valoración de un usuario para una película."""
